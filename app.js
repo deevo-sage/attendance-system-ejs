@@ -9,20 +9,12 @@ const moment = require("moment");
 const seedDB = require("./seed");
 const removeUsers = require("./remove");
 const routes = require("./routes/index");
-// const generatePDF = require('./generatePdf');
-require('dotenv').config({path:'variables.env'});
-
-mongoose.Promise = global.Promise; //tell mongoose to use ES6 promises
-mongoose.connect(process.env.DATABASE, err => {
-  if (err) {
-    console.log("Cannot connect to database");
-    console.log(err);
-  } else {
-    console.log("Connection to database was succesful");
-  }
-});
-
 const User = require("./models/user");
+
+// const generatePDF = require('./generatePdf');
+require("dotenv").config();
+mongoose.connect(process.env.DATABASE);
+var db = mongoose.connection;
 
 app.set("view engine", "ejs");
 app.set("views", `${__dirname}/views`);
@@ -34,7 +26,7 @@ app.use(
   session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
   })
 );
 app.use(flash());
